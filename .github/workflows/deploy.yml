@@ -7,6 +7,7 @@ permissions:
   id-token: write
   contents: read
 
+# Trying again:
 jobs:
   smoke-test:
     runs-on: ubuntu-latest

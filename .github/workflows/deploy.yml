@@ -20,6 +20,20 @@ jobs:
           role-to-assume: arn:aws:iam::981026211833:role/github-actions-purrimeter
           aws-region: ca-central-1
 
+      - name: Log in to ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push image
+        env:
+          REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          REPO: purrimeter-fetch
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          docker build -t $REGISTRY/$REPO:$IMAGE_TAG functions/fetch
+          docker push $REGISTRY/$REPO:$IMAGE_TAG
+          echo "Pushed $REGISTRY/$REPO:$IMAGE_TAG"
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
 

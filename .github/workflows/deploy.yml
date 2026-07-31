@@ -10,6 +10,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform # All .tf files are in the 'terraform' directory
     steps:
       - name: Checkout
         uses: actions/checkout@v6

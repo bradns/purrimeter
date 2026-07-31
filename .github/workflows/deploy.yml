@@ -27,7 +27,7 @@ jobs:
       - name: Build and push image
         env:
           REGISTRY: ${{ steps.ecr-login.outputs.registry }}
-          REPO: purrimeter-fetch
+          REPO: purrimeter-ecr
         run: |
           IMAGE_TAG=${{ github.sha }}
           docker build -t $REGISTRY/$REPO:$IMAGE_TAG lambdas/fetch

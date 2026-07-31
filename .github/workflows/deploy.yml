@@ -11,6 +11,9 @@ jobs:
   smoke-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Show the OIDC subject claim
+        run: echo "Repo: ${{ github.repository }}  Ref: ${{ github.ref }}"
+
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:

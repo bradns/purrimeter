@@ -1,0 +1,21 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::981026211833:role/github-actions-purrimeter
+          aws-region: ca-central-1
+
+      - name: Verify we assumed the role
+        run: aws sts get-caller-identity

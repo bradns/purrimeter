@@ -28,6 +28,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push image
+        working-directory: . # This needs to run from the root and not 'terraform'
         env:
           REGISTRY: ${{ steps.ecr-login.outputs.registry }}
           REPO: purrimeter-fetch

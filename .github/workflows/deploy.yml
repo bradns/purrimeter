@@ -30,7 +30,7 @@ jobs:
           REPO: purrimeter-fetch
         run: |
           IMAGE_TAG=${{ github.sha }}
-          docker build -t $REGISTRY/$REPO:$IMAGE_TAG functions/fetch
+          docker build -t $REGISTRY/$REPO:$IMAGE_TAG lambdas/fetch
           docker push $REGISTRY/$REPO:$IMAGE_TAG
           echo "Pushed $REGISTRY/$REPO:$IMAGE_TAG"
 

@@ -77,7 +77,7 @@ resource "aws_lambda_function" "fetch" {
 
 resource "aws_cloudwatch_event_rule" "every_15_min" {
   name                = "purrimeter-fetch-schedule"
-  schedule_expression = "rate(15 minutes)"
+  schedule_expression = "rate(2 hours)"
 }
 
 resource "aws_cloudwatch_event_target" "fetch" {

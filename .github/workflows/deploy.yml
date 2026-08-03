@@ -28,6 +28,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push image
+        id: build
         working-directory: . # This needs to run from the root and not 'terraform'
         env:
           REGISTRY: ${{ steps.ecr-login.outputs.registry }}
@@ -36,7 +37,8 @@ jobs:
           IMAGE_TAG=${{ github.sha }}
           docker build -t $REGISTRY/$REPO:$IMAGE_TAG lambdas/fetch
           docker push $REGISTRY/$REPO:$IMAGE_TAG
-          echo "Pushed $REGISTRY/$REPO:$IMAGE_TAG"
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $REGISTRY/$REPO:$IMAGE_TAG)
+          echo "image_uri=$DIGEST" >> "$GITHUB_OUTPUT"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
@@ -52,6 +54,9 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan -no-color -var="image_uri=${{ steps.build.outputs.image_uri }}"
+
+      - name: Debug image URI
+        run: echo "image_uri is >>>${{ steps.build.outputs.image_uri }}<<<"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -no-color -var="image_uri=${{ steps.build.outputs.image_uri }}"
